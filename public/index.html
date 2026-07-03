@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Zwettl Rummy</title>
-<link rel="stylesheet" href="style.css?v=2" />
+<link rel="stylesheet" href="style.css?v=3" />
 </head>
 <body>
   <div id="lobby" class="screen">
@@ -30,21 +30,32 @@
   <div id="game" class="screen hidden">
     <div id="toast"></div>
 
+    <!-- Zusammenfassungs-Modal -->
+    <div id="summaryModal" class="modal-overlay hidden">
+      <div class="modal-box">
+        <h2 id="summaryTitle">Hand beendet</h2>
+        <div id="summaryBody"></div>
+        <div class="modal-actions">
+          <button id="nextHandBtn">Nächste Hand ▶</button>
+          <button id="closeSummaryBtn" class="hidden">Schließen</button>
+        </div>
+      </div>
+    </div>
+
     <div class="topbar">
       <div id="scoreboard"></div>
       <div class="hand-info">Hand <span id="handNumber">1</span>/<span id="handsPerRound">5</span></div>
     </div>
 
     <div class="opponents" id="opponents"></div>
-
     <div class="table-area" id="tableArea"></div>
 
     <div class="center-piles">
-      <div class="pile" id="stockPile" title="Klicken zum Ziehen">
+      <div class="pile" id="stockPile" title="Vom verdeckten Stapel ziehen">
         <div class="card back" id="stockCard"></div>
         <span class="pile-label"><span id="stockCount">0</span> Karten</span>
       </div>
-      <div class="pile" id="discardPile" title="Klicken zum Nehmen / Ablegen">
+      <div class="pile" id="discardPile" title="Von Ablage nehmen · Karte wählen + hier klicken zum Ablegen">
         <div class="card-slot" id="discardCard"></div>
         <span class="pile-label">Ablage</span>
       </div>
@@ -57,9 +68,8 @@
     </div>
 
     <div class="action-bar">
-      <button id="meldBtn">Auslegen (3+ Karten wählen)</button>
+      <button id="meldBtn">Auslegen (3+ wählen)</button>
       <button id="jokerBtn">Jolly tauschen</button>
-      <button id="nextHandBtn" class="hidden">Nächste Hand</button>
     </div>
 
     <div id="modeHint" class="mode-hint"></div>
@@ -67,6 +77,7 @@
   </div>
 
   <script src="/socket.io/socket.io.js"></script>
-  <script src="app.js?v=2"></script>
+  <script src="cards.js?v=3"></script>
+  <script src="app.js?v=3"></script>
 </body>
 </html>

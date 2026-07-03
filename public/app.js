@@ -1,3 +1,4 @@
+document.addEventListener('DOMContentLoaded', () => {
 const socket = io();
 
 const SUIT_SYMBOL = { H: '♥', D: '♦', C: '♣', S: '♠' };
@@ -437,3 +438,5 @@ function runAnimations(prev, curr) {
     flyCard(seatRect(actorId), discardRect, curr.discardTop, { delay });
   }
 }
+
+});

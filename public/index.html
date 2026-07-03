@@ -4,16 +4,20 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Zwettl Rummy</title>
-<link rel="stylesheet" href="style.css" />
+<link rel="stylesheet" href="style.css?v=2" />
 </head>
 <body>
   <div id="lobby" class="screen">
     <div class="lobby-box">
-      <h1>🃏 Zwettl Rummy</h1>
+      <div class="lobby-cardart">
+        <div class="mini-card back"></div>
+        <div class="mini-card face">A<span>♥</span></div>
+      </div>
+      <h1>Zwettl Rummy</h1>
       <p class="subtitle">Österreichische Variante · 4 Spieler · gegen 3 KI-Gegner</p>
-      <label>Dein Name</label>
+      <label for="nameInput">Dein Name</label>
       <input id="nameInput" type="text" placeholder="Raphael" maxlength="20" />
-      <label>Schwierigkeitsgrad KI</label>
+      <label for="difficultySelect">Schwierigkeitsgrad KI</label>
       <select id="difficultySelect">
         <option value="easy">Leicht</option>
         <option value="medium" selected>Mittel</option>
@@ -28,37 +32,33 @@
 
     <div class="topbar">
       <div id="scoreboard"></div>
-      <div class="hand-info">Hand <span id="handNumber">1</span> / <span id="handsPerRound">5</span></div>
+      <div class="hand-info">Hand <span id="handNumber">1</span>/<span id="handsPerRound">5</span></div>
     </div>
 
-    <div class="table-area" id="tableArea">
-      <!-- Melds werden hier eingefügt -->
-    </div>
+    <div class="opponents" id="opponents"></div>
+
+    <div class="table-area" id="tableArea"></div>
 
     <div class="center-piles">
-      <div class="pile" id="stockPile">
-        <div class="card back"></div>
-        <span id="stockCount">0</span> Karten
+      <div class="pile" id="stockPile" title="Klicken zum Ziehen">
+        <div class="card back" id="stockCard"></div>
+        <span class="pile-label"><span id="stockCount">0</span> Karten</span>
       </div>
-      <div class="pile" id="discardPile">
+      <div class="pile" id="discardPile" title="Klicken zum Nehmen / Ablegen">
         <div class="card-slot" id="discardCard"></div>
-        <span>Ablage</span>
+        <span class="pile-label">Ablage</span>
       </div>
     </div>
 
-    <div class="turn-banner" id="turnBanner">Du bist am Zug – zieh eine Karte</div>
+    <div class="turn-banner" id="turnBanner"></div>
 
     <div class="hand-area">
       <div class="hand" id="handCards"></div>
     </div>
 
     <div class="action-bar">
-      <button id="drawStockBtn">Vom Stapel ziehen</button>
-      <button id="drawDiscardBtn">Von Ablage nehmen</button>
-      <button id="meldBtn">Auslegen (min. 3)</button>
-      <button id="layoffBtn">Anlegen</button>
+      <button id="meldBtn">Auslegen (3+ Karten wählen)</button>
       <button id="jokerBtn">Jolly tauschen</button>
-      <button id="discardBtn">Ablegen (Zug beenden)</button>
       <button id="nextHandBtn" class="hidden">Nächste Hand</button>
     </div>
 
@@ -67,6 +67,6 @@
   </div>
 
   <script src="/socket.io/socket.io.js"></script>
-  <script src="app.js"></script>
+  <script src="app.js?v=2"></script>
 </body>
 </html>

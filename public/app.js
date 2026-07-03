@@ -24,49 +24,58 @@ el('startBtn').addEventListener('click', () => {
   handScores = [];
 });
 
-/* ─── Stapel-Klick ───────────────────────────────────────────────────────── */
-el('stockPile').addEventListener('click', () => {
-  if (!isMyTurn()) return;
-  if (currentState.phase !== 'DRAW')
-    return showToast('Schon gezogen – jetzt auslegen oder Karte ablegen.');
-  sendAction({ type: 'DRAW_STOCK' });
-});
+/* ─── Event-Delegation (alle game-Elemente erst nach DOM-Ready verfügbar) ── */
+document.addEventListener('click', (e) => {
+  const tid = e.target.closest('[id]')?.id || e.target.id;
 
-el('discardPile').addEventListener('click', () => {
-  if (!isMyTurn()) return;
-  if (currentState.phase === 'DRAW') {
-    if (!currentState.discardTop) return showToast('Ablage ist leer.');
-    sendAction({ type: 'DRAW_DISCARD' });
-  } else {
-    if (selectedIds.size !== 1)
-      return showToast('Wähle genau 1 Karte, dann klick auf die Ablage.');
-    sendAction({ type: 'DISCARD', cardId: [...selectedIds][0] });
-    clearSelection();
+  if (e.target.closest('#stockPile')) {
+    if (!isMyTurn()) return;
+    if (currentState.phase !== 'DRAW')
+      return showToast('Schon gezogen – jetzt auslegen oder Karte ablegen.');
+    sendAction({ type: 'DRAW_STOCK' });
+    return;
   }
-});
 
-/* ─── Aktions-Buttons ────────────────────────────────────────────────────── */
-el('meldBtn').addEventListener('click', () => {
-  if (selectedIds.size < 3)
-    return showToast('Wähle mindestens 3 Karten für einen Satz oder eine Straße.');
-  sendAction({ type: 'MELD', cardIds: [...selectedIds] });
-  clearSelection();
-});
+  if (e.target.closest('#discardPile')) {
+    if (!isMyTurn()) return;
+    if (currentState.phase === 'DRAW') {
+      if (!currentState.discardTop) return showToast('Ablage ist leer.');
+      sendAction({ type: 'DRAW_DISCARD' });
+    } else {
+      if (selectedIds.size !== 1)
+        return showToast('Wähle genau 1 Karte, dann klick auf die Ablage.');
+      sendAction({ type: 'DISCARD', cardId: [...selectedIds][0] });
+      clearSelection();
+    }
+    return;
+  }
 
-el('jokerBtn').addEventListener('click', () => {
-  if (selectedIds.size !== 1)
-    return showToast('Wähle erst die Ersatzkarte, dann klick auf den Meld mit dem Jolly.');
-  awaitingTarget = 'JOKER';
-  render();
-});
+  if (tid === 'meldBtn') {
+    if (selectedIds.size < 3)
+      return showToast('Wähle mindestens 3 Karten für einen Satz oder eine Straße.');
+    sendAction({ type: 'MELD', cardIds: [...selectedIds] });
+    clearSelection();
+    return;
+  }
 
-el('nextHandBtn').addEventListener('click', () => {
-  el('summaryModal').classList.add('hidden');
-  sendAction({ type: 'NEXT_HAND' });
-});
+  if (tid === 'jokerBtn') {
+    if (selectedIds.size !== 1)
+      return showToast('Wähle erst die Ersatzkarte, dann klick auf den Meld mit dem Jolly.');
+    awaitingTarget = 'JOKER';
+    render();
+    return;
+  }
 
-el('closeSummaryBtn').addEventListener('click', () => {
-  el('summaryModal').classList.add('hidden');
+  if (tid === 'nextHandBtn') {
+    el('summaryModal').classList.add('hidden');
+    sendAction({ type: 'NEXT_HAND' });
+    return;
+  }
+
+  if (tid === 'closeSummaryBtn') {
+    el('summaryModal').classList.add('hidden');
+    return;
+  }
 });
 
 /* ─── Utils ─────────────────────────────────────────────────────────────── */

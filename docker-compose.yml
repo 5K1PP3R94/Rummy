@@ -1,0 +1,9 @@
+services:
+  rummy:
+    build: .
+    container_name: zwettl-rummy
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
